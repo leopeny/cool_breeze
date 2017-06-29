@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block page_title %}{% endblock %}</title>
+        <!-- Latest compiled and minified Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+            integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+       <!-- Custom styles for this template -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/basic.css') }}">
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" 
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        {% block header %}{% endblock %}
+
+        <script type=text/javascript>
+          $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+        <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/ajax_breeze.js') }}"></script> -->
+
+ 
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" 
+                        data-toggle="collapse" data-target="#navbar" 
+                        aria-expanded="false" aria-controls="navbar">
+                        
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Cool breeze</a>
+                </div>               
+            </div>
+        </nav>
+
+        <div class="container">
+
+            <div class="basic">
+                <h1>{% block page_header %}{% endblock %}</h1>
+                {% with messages = get_flashed_messages() %}
+                    <div class="messages">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endwith %}
+                
+                <div class="content">
+                    <h2>Go outside at {{daily_apparent_min['time']}}</h2>
+                    or
+                    <h2>Go outside on {{weekly_apparent_min['day']}} at {{weekly_apparent_min['time']}}</h2>
+
+                    <a id="why" href="">Why?</a>
+                    <div id="more_info">
+                        <p class="today">
+                            Today at {{daily_apparent_min['time']}} the feels like temperature will be at its coolest
+                            with an apparent temp of {{daily_apparent_min['apparent_temp']}}&deg;F<br/>
+                            The actual temperature will be {{daily_apparent_min['temp']}}&deg;F
+                            with a humidity of {{daily_apparent_min['humidity']}}%
+                        </p>
+                        <div id="today_graph"></div>
+
+                        <p class="week">
+                            The coolest temp in the next 7 days will be on {{weekly_apparent_min['day']}} 
+                            at {{weekly_apparent_min}} with a temp of {{weekly_apparent_min}}&deg;F<br/>
+                            The actual temperature will be {{daily_apparent_min['temp']}}&deg;F
+                            with a humidity of {{daily_apparent_min['humidity']}}%
+                        </p>
+                        <div id="weekly_graph"></div>
+                    </div>
+                    <pre>
+                        {{json}}
+                    </pre>
+                </div>
+            </div>
+    
+            <hr>
+
+            <footer>
+              <p>
+              All thanks to <a href="forecast.io">Forecast IO</a> and their awesome API...except one, 
+              that'll go to <a href="d3jsplus.org">d3jsplus</a><br/>
+              &copy; KABertrand, whatever that means in this context.
+              </p>
+              {% block footer %}{% endblock %}
+            </footer>
+        </div>
+
+      <script type="text/javascript" src="{{ url_for('static', filename='js/breeze.js') }}"></script>
+        
+    </body>
+</html>

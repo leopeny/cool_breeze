@@ -1,0 +1,16 @@
+body {
+  padding-top: 50px;
+}
+
+pre {
+    text-align: left;
+}
+
+#more_info {
+    display: none;
+}
+
+.basic {
+  padding: 40px 15px;
+  text-align: center;
+}
